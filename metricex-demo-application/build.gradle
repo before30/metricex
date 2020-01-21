@@ -1,22 +1,8 @@
-apply plugin: "com.gorylenko.gradle-git-properties"
 apply plugin: 'com.google.protobuf'
-
-ext {
-    set('springCloudVersion', "Hoxton.SR1")
-}
-
-gitProperties {
-    // Change date format in git.properties file.
-    dateFormat = "yyyy-MM-dd HH:mm:ssZ"
-    dateFormatTimeZone = 'KST'
-}
-
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-//    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
-    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -34,14 +20,6 @@ dependencies {
     implementation 'io.github.resilience4j:resilience4j-micrometer:1.1.0'
     implementation 'io.github.resilience4j:resilience4j-prometheus:1.1.0'
 }
-
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
-
 
 sourceSets {
     main {

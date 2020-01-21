@@ -1,5 +1,5 @@
 rootProject.name = 'metricex'
-include 'metricex-backend01'
-include 'metricex-backend02'
-include 'metricex-service'
+include 'metricex-demo-application'
+include 'metricex-http-backend'
+include 'metricex-grpc-backend'
 
