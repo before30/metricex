@@ -52,16 +52,4 @@ chaos:
       repository: false
       rest-controller: true
       service: true
-#chaos:
-#  monkey:
-#    enabled: true
-#    assaults:
-#      latency-active: true
-#      latency-range-start: 100
-#      latency-range-end: 5000
-#    watcher:
-#      controller: true
-#      rest-controller: true
-#      service: true
-#      repository: true
-#      component: true
+
