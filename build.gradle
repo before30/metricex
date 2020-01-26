@@ -13,6 +13,7 @@ buildscript {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:2.2.0"
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.5'
+        classpath "com.palantir.gradle.docker:gradle-docker:0.24.0"
     }
 }
 
@@ -52,8 +53,6 @@ subprojects {
         }
 
         ignoreFailures true
-        // maxParallelForks 4
-        // set heap size for the test JVM(s)
         minHeapSize = "1G"
         maxHeapSize = "4G"
         jvmArgs "-XX:ReservedCodeCacheSize=2g"
