@@ -1,0 +1,51 @@
+# my global config
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 15s # By default, scrape targets every 15 seconds.
+  external_labels:
+    monitor: 'my-project'
+scrape_configs:
+  - job_name: 'backend-grpc-app'
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+          - backend-grpc-app:8080
+        labels:
+          application: 'backend-grpc-app'
+    metrics_path: /actuator/prometheus
+
+  - job_name: 'backend-web-app'
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+          - backend-web-app:8080
+        labels:
+          application: 'backend-web-app'
+    metrics_path: /actuator/prometheus
+
+  - job_name: 'backend-webflux-app'
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+          - backend-webflux-app:8080
+        labels:
+          application: 'backend-webflux-app'
+    metrics_path: /actuator/prometheus
+
+  - job_name: 'backend-akkahttp-app'
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+          - backend-akkahttp-app:8080
+        labels:
+          application: 'backend-akkahttp-app'
+    metrics_path: /metrics
+
+  - job_name: 'demo-app'
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+          - demo-app:8080
+        labels:
+          application: 'demo-app'
+    metrics_path: /actuator/prometheus

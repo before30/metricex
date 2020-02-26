@@ -1,0 +1,62 @@
+version: '3.7'
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
+services:
+  backend-grpc-app:
+    image: backend-grpc-app
+    ports:
+      - 8081:8080
+      - 6565:6565
+  backend-web-app:
+    image: backend-web-app
+    ports:
+      - 8082:8080
+  backend-webflux-app:
+    image: backend-webflux-app
+    ports:
+      - 8083:8080
+  backend-akkahttp-app:
+    image: backend-akkahttp-app
+    ports:
+      - 8084:8080
+  demo-app:
+    image: demo-app
+    ports:
+      - 8888:8080
+    environment:
+      - backend.grpc.host=backend-grpc-app
+      - backend.grpc.port=6565
+      - backend.web.host=backend-web-app
+      - backend.web.port=8080
+      - backend.webflux.host=backend-webflux-app
+      - backend.webflux.port=8080
+      - backend.akka.host=backend-akkahttp-app
+      - backend.akka.port=8080
+    depends_on:
+      - backend-grpc-app
+      - backend-web-app
+      - backend-webflux-app
+  prometheus:
+    image: prom/prometheus:v2.16.0
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+  grafana:
+    image: grafana/grafana
+    user: "104"
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana

@@ -1,4 +1,5 @@
 buildscript {
+
     repositories {
         jcenter()
         mavenCentral()
@@ -11,8 +12,6 @@ buildscript {
         classpath "io.spring.gradle:dependency-management-plugin:1.0.8.RELEASE"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:2.2.2.RELEASE"
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
-        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:2.2.0"
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.5'
         classpath "com.palantir.gradle.docker:gradle-docker:0.24.0"
     }
 }
@@ -31,8 +30,9 @@ subprojects {
     apply plugin: 'java'
     apply plugin: "io.spring.dependency-management"
     apply plugin: "org.springframework.boot"
-    apply plugin: 'idea'
     apply plugin: 'jacoco'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
 
     configurations {
         developmentOnly
