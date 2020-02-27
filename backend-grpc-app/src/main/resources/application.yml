@@ -1,0 +1,36 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: backend-grpc-app
+  profiles:
+    active: chaos-monkey
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, chaosmonkey, prometheus
+  endpoint:
+    metrics:
+      enabled: true
+    chaosmonkey:
+      enabled: true
+    chaosmonkeyjmx:
+      enabled: false
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+chaos:
+  monkey:
+    enabled: true
+    watcher:
+      component: false
+      controller: true
+      repository: true
+      rest-controller: true
+      service: true
+    assaults:
+      latency-active: true
+      latency-range-start: 10
+      latency-range-end: 800
