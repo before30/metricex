@@ -27,7 +27,8 @@ dependencies {
     // prometheus 메트릭 노출용
     implementation 'io.micrometer:micrometer-registry-prometheus'
     // grpc 메트릭 노출용
-    implementation 'com.be-hase.grpc-micrometer:grpc-micrometer:0.0.2'
+//    implementation 'com.be-hase.grpc-micrometer:grpc-micrometer:0.0.2'
+    implementation 'me.dinowernli:java-grpc-prometheus:0.3.0'
 }
 
 sourceSets {
