@@ -1,16 +1,78 @@
-plugins {
-    id 'java'
-}
+apply plugin: 'com.google.protobuf'
+apply plugin: "com.palantir.docker"
 
-group 'cc.before30'
-version '0.0.1-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+docker {
+    dependsOn build
+    dockerfile file('src/main/docker/Dockerfile')
+    name "${project.name}"
+    version = "${project.version}"
+    files bootJar.archivePath
+    buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    implementation 'org.apache.commons:commons-lang3:3.9'
+
+    // grpc starter
+    implementation 'io.github.lognet:grpc-spring-boot-starter:3.5.1'
+    // chaos monkey 테스트용
+    implementation 'de.codecentric:chaos-monkey-spring-boot:2.2.0'
+    // prometheus 메트릭 노출용
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    // grpc 메트릭 노출용
+//    implementation 'com.be-hase.grpc-micrometer:grpc-micrometer:0.0.2'
+    implementation 'me.dinowernli:java-grpc-prometheus:0.3.0'
 }
+
+sourceSets {
+    main {
+        java {
+            srcDir 'build/main/protoGen'
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.6.1'
+    }
+
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.21.0"
+        }
+    }
+
+    generateProtoTasks {
+        ofSourceSet('main').each { task ->
+            task.builtins {
+                java{
+                    outputSubDir = 'protoGen'
+                }
+            }
+            task.plugins {
+                grpc {
+                    outputSubDir = 'protoGen'
+                }
+
+            }
+        }
+    }
+
+    generatedFilesBaseDir = "$projectDir/build/"
+}
+
+task cleanProtoGen{
+    doFirst{
+        delete("$projectDir/build/main/protoGen")
+    }
+}
+
+clean.dependsOn cleanProtoGen
