@@ -1,0 +1,39 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: backend-webflux-app
+  profiles:
+    active: chaos-monkey
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, chaosmonkey, prometheus
+  endpoint:
+    metrics:
+      enabled: true
+    chaosmonkey:
+      enabled: true
+    chaosmonkeyjmx:
+      enabled: false
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles:
+        http.server.requests: 0.5, 0.9, 0.95, 0.99
+chaos:
+  monkey:
+    enabled: true
+    watcher:
+      component: false
+      controller: true
+      repository: true
+      rest-controller: true
+      service: true
+    assaults:
+      latency-active: true
+      latency-range-start: 20
+      latency-range-end: 500
