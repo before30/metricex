@@ -1,6 +1,8 @@
 package cc.before30.metricex.demo.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * DemoAppConfig
@@ -11,4 +13,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DemoAppConfig {
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+
 }
