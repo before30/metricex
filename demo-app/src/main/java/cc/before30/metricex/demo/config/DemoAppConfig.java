@@ -11,12 +11,12 @@ import org.springframework.web.client.RestTemplate;
  * @author before30
  * @since 2020/03/04
  */
-
 @Configuration
 public class DemoAppConfig {
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        builder.interceptors(new CustomClientHttpRequestInterceptor());
         return builder.build();
     }
 
